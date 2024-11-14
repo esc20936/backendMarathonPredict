@@ -16,5 +16,3 @@ COPY . .
 # Specify the command to run your application (adjust as necessary)
 CMD ["uvicorn", "Server:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
-# Expose the port the app runs on
-EXPOSE 5000
