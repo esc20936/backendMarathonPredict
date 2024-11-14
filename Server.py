@@ -19,6 +19,6 @@ app.include_router(model_router)
 
 @app.get("/")
 def read_root():
-    return {"Hello": "worlasdas"}
+    return {"Hello": "Hola mundo que tal"}
 
 
