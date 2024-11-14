@@ -39,7 +39,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: copy file via ssh key
+      - name: Copy files via SSH key
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.HOST }}
@@ -47,14 +47,14 @@ jobs:
           key: ${{ secrets.KEY }}
           source: "docker-compose.yml, nginx/nginx.conf"
           target: .
-      - name: run docker-compose
+      - name: Run docker-compose commands
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           script: |
-            docker compose down
-            docker rmi -f $(docker images -q)
-            docker compose pull
-            docker compose up -d
+            docker-compose down
+            docker rmi -f $(docker images -q) || true
+            docker-compose pull
+            docker-compose up -d
