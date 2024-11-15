@@ -7,4 +7,3 @@ def loadModel(v2=False):
     }
     model = joblib.load(path[v2])
     return model
-

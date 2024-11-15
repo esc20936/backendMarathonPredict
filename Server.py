@@ -21,4 +21,3 @@ app.include_router(model_router)
 def read_root():
     return {"Hello": "World"}
 
-
