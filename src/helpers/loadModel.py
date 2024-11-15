@@ -1,9 +1,10 @@
 import joblib
 
-def loadModel():
-    model = joblib.load('models/marathon_model.joblib')
+def loadModel(v2=False):
+    path = {
+        True: 'models/best_model_pipeline.joblib',
+        False: 'models/marathon_model.joblib'
+    }
+    model = joblib.load(path[v2])
     return model
 
-def loadModel2():
-    model = joblib.load('models/best_model_pipeline.joblib')
-    return model
