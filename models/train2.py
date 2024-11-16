@@ -8,9 +8,12 @@ from sklearn import tree
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import StandardScaler
 
-def append_new_record2(new_data_df, path="../data2/data_model2.csv"):
+import pandas as pd
+
+def append_new_record2(new_data_df, path="./data2/data_model2.csv"):
     """
     Agrega un nuevo registro desde un DataFrame al archivo existente y guarda los cambios.
+    Si faltan columnas en los nuevos datos, estas se completan con 0.
     
     Args:
     new_data_df (pd.DataFrame): DataFrame con los nuevos registros a agregar.
@@ -19,9 +22,13 @@ def append_new_record2(new_data_df, path="../data2/data_model2.csv"):
     # Leer el archivo existente
     df = pd.read_csv(path)
     
-    # Verificar que las columnas coincidan entre el DataFrame existente y el nuevo
-    if not set(new_data_df.columns).issubset(set(df.columns)):
-        raise ValueError("Las columnas del nuevo DataFrame no coinciden con las del archivo existente.")
+    # Rellenar las columnas faltantes en los nuevos datos con 0
+    for column in df.columns:
+        if column not in new_data_df.columns:
+            new_data_df[column] = 0
+    
+    # Eliminar columnas extras en los nuevos datos que no estén en el archivo existente
+    new_data_df = new_data_df[df.columns]
     
     # Agregar los nuevos registros al archivo existente
     updated_df = pd.concat([df, new_data_df], ignore_index=True)
@@ -30,7 +37,8 @@ def append_new_record2(new_data_df, path="../data2/data_model2.csv"):
     updated_df.to_csv(path, index=False)
     # print(f"Nuevo registro agregado al archivo: {path}")
 
-def train_model2(path="../data2/data_model2.csv", model_path="best_model_pipeline.joblib"):
+
+def train_model2(path="./data2/data_model2.csv", model_path="best_model_pipeline.joblib"):
     """
     Entrena un modelo con los datos del archivo actualizado y guarda el modelo entrenado.
     
