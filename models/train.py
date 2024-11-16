@@ -5,7 +5,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 
 # Función para agregar un nuevo registro y actualizar el archivo
-def append_new_record(new_data_df, file_path="../data/external/MarathonData.csv"):
+import pandas as pd
+
+def append_new_record(new_data_df, file_path="./data/external/MarathonData.csv"):
     """
     Agrega un nuevo registro desde un DataFrame al archivo existente y guarda los cambios.
     
@@ -16,9 +18,14 @@ def append_new_record(new_data_df, file_path="../data/external/MarathonData.csv"
     # Leer el archivo existente
     existing_df = pd.read_csv(file_path)
     
-    # Verificar que las columnas coincidan entre el DataFrame existente y el nuevo
-    if not set(new_data_df.columns).issubset(set(existing_df.columns)):
-        raise ValueError("Las columnas del nuevo DataFrame no coinciden con las del archivo existente.")
+    # Asegurar que el nuevo DataFrame tiene las mismas columnas que el existente
+    for col in existing_df.columns:
+        if col not in new_data_df.columns:
+            new_data_df[col] = 0  # Rellenar las columnas faltantes con 0
+
+    # Verificar si el nuevo DataFrame tiene columnas que no están en el existente
+    # Si sobran columnas en el nuevo DataFrame, eliminarlas
+    new_data_df = new_data_df[existing_df.columns]
     
     # Agregar los nuevos registros al archivo existente
     updated_df = pd.concat([existing_df, new_data_df], ignore_index=True)
@@ -26,8 +33,9 @@ def append_new_record(new_data_df, file_path="../data/external/MarathonData.csv"
     # Guardar el archivo actualizado
     updated_df.to_csv(file_path, index=False)
 
+
 # Función para entrenar el modelo con la data actualizada
-def train_model(file_path="'../data/external/MarathonData.csv'", model_path="marathon_model.joblib"):
+def train_model(file_path="./data/external/MarathonData.csv", model_path="marathon_model.joblib"):
     """
     Entrena un modelo con los datos del archivo actualizado y guarda el modelo entrenado.
     
