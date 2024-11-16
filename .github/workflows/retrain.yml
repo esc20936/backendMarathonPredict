@@ -26,4 +26,4 @@ jobs:
         pip install joblib  # Install additional packages if required
 
     - name: Run retrain.py
-      run: python ./models/retrain.py  # Path to your retrain.py script
+      run: python models/retrain.py  # Path to your retrain.py script
